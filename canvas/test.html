@@ -38,11 +38,9 @@
       function getNewAnimation() {
         var frameCounter = 0;
         var anim = new Kinetic.Animation(function(frameObj) {
-          console.log('frame: ' + frameCounter);
           if (frameCounter/period < images.length) {
             if (frameCounter === 0 || frameCounter % period === 0) {
               var imageIndex = (frameCounter === 0 ? 0 : frameCounter/period);
-              console.log('image index: ' + imageIndex);
               imageObj.src = images[imageIndex];
             }
           }
@@ -59,8 +57,10 @@
       function goToFrame(frameNumber) {
         if (frameNumber > maxPictures || frameNumber < minPictures)
           return;
-        imageObj.src = this.images[frameNumber - 1];
-        layer.add(imageObj);
+        if (currentAnimation)
+          currentAnimation.stop();
+        imageObj.src = images[frameNumber - 1];
+        layer.draw();
       }
       
       document.querySelector('#startbutton').addEventListener('click', function () {
@@ -77,8 +77,10 @@
       }, false);
       
       document.querySelector('#goToFrameButton').addEventListener('click', function() {
-        currentAnimation = goToFrame(document.querySelector('#frameInput'));
-        document.querySelector('#startbutton').enabled = false;
+        currentAnimation = goToFrame(document.querySelector('#frameInput').value);
+        document.querySelector('#startbutton').disabled = 'true';
+        document.querySelector('#stopbutton').disabled = 'true';
+        document.querySelector('#restartbutton').disabled = 'true';
       }, false);
 
     </script>
