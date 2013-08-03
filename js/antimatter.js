@@ -22,14 +22,15 @@ var camera_pos = {
 
 function init() {
     scene = new THREE.Scene();
-
     camera = new THREE.PerspectiveCamera(100, window.innerWidth / window.innerHeight, 0.1, 4000);
     camera.position.x = camera_pos.x;
     camera.position.y = camera_pos.y;
     camera.position.z = camera_pos.z;
 
-    renderer = new THREE.WebGLRenderer({clearColor: color_background, clearAlpha: 1});
-    renderer.setSize( window.innerWidth, window.innerHeight );
+    renderer = new THREE.WebGLRenderer();
+    renderer.setClearColor(color_background, 1);
+    width = $("#antimatter-visualization").width();
+    renderer.setSize(width, width/1.21);
     $("#antimatter-visualization").append(renderer.domElement);
 
     generateGrid();
