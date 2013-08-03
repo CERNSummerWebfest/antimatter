@@ -8,7 +8,7 @@ var color_lines = 0xDF740C;
 
 var max_height = 500;
 var min_height = 0;
-var plane_width = 1024;
+var grid_size = 5000;
 
 var grid_x = 1280;
 var grid_z = 1024;
@@ -21,16 +21,18 @@ var camera_pos = {
 };
 
 function init() {
+    width = $("#antimatter-visualization").width();
+    height = width/1.31;
+
     scene = new THREE.Scene();
-    camera = new THREE.PerspectiveCamera(100, window.innerWidth / window.innerHeight, 0.1, 4000);
+    camera = new THREE.PerspectiveCamera(100, width/height, 0.1, 4000);
     camera.position.x = camera_pos.x;
     camera.position.y = camera_pos.y;
     camera.position.z = camera_pos.z;
 
-    renderer = new THREE.WebGLRenderer();
+    renderer = new THREE.WebGLRenderer({antialias: true});
     renderer.setClearColor(color_background, 1);
-    width = $("#antimatter-visualization").width();
-    renderer.setSize(width, width/1.21);
+    renderer.setSize(width, height);
     $("#antimatter-visualization").append(renderer.domElement);
 
     generateGrid();
@@ -39,18 +41,18 @@ function init() {
 function generateGrid() {
     var geometry = new THREE.Geometry();
 
-    for (var i=-plane_width; i<=plane_width; i+=grid_step) {
+    for (var i=-grid_size/2; i<=grid_size/2; i+=grid_step) {
         // Upper grid
-        geometry.vertices.push(new THREE.Vector3(-plane_width/2, max_height, i));
-        geometry.vertices.push(new THREE.Vector3(plane_width, max_height, i));
-        geometry.vertices.push(new THREE.Vector3(i, max_height, -plane_width));
-        geometry.vertices.push(new THREE.Vector3(i, max_height, plane_width));
+        geometry.vertices.push(new THREE.Vector3(-grid_size/2, max_height, i));
+        geometry.vertices.push(new THREE.Vector3(grid_size/2, max_height, i));
+        geometry.vertices.push(new THREE.Vector3(i, max_height, -grid_size/2));
+        geometry.vertices.push(new THREE.Vector3(i, max_height, grid_size/2));
 
         // Bottom grid
-        geometry.vertices.push(new THREE.Vector3(-plane_width, min_height, i));
-        geometry.vertices.push(new THREE.Vector3(plane_width, min_height, i));
-        geometry.vertices.push(new THREE.Vector3(i, min_height, -plane_width));
-        geometry.vertices.push(new THREE.Vector3(i, min_height, plane_width));
+        geometry.vertices.push(new THREE.Vector3(-grid_size/2, min_height, i));
+        geometry.vertices.push(new THREE.Vector3(grid_size/2, min_height, i));
+        geometry.vertices.push(new THREE.Vector3(i, min_height, -grid_size/2));
+        geometry.vertices.push(new THREE.Vector3(i, min_height, grid_size/2));
     }
 
     var material = new THREE.LineBasicMaterial({color: color_mesh, opacity: 1});
@@ -59,12 +61,12 @@ function generateGrid() {
     scene.add(line);
 }
 
-function convert(x, y, z) {
+function convert(pos) {
     var positions = {};
 
-    positions["x"] = x * ratio_x;
-    positions["y"] = z * ratio_y;
-    positions["z"] = y * ratio_z;
+    positions["x"] = pos.x - grid_x/2;
+    positions["y"] = pos.z;
+    positions["z"] = pos.y - grid_z/2;
 
     return positions;
 }
@@ -76,26 +78,16 @@ function fetch() {
     var result = {
         "info": {
             "tracks": [
-                {"entry": {"x": 200, "y": 1000, "z": 3},
-                 "exit": {"x": 400, "y": 100, "z": 37}},
-                {"entry": {"x": 567, "y": 100, "z": 37},
-                 "exit": {"x": 400, "y": 100, "z": 0}},
-                {"entry": {"x": 1, "y": 1, "z": 1},
-                 "exit": {"x": 1000, "y": 1000, "z": 39}},
-                {"entry": {"x": 150, "y": 150, "z": 3},
-                 "exit": {"x": 200, "y": 200, "z": 7}},
-                {"entry": {"x": 50, "y": 1000, "z": 20},
-                 "exit": {"x": 900, "y": 100, "z": 10}},
-                {"entry": {"x": 0, "y": 14, "z": 0},
-                 "exit": {"x": 0, "y": 0, "z": 0}}
+                {"entry": {"x": 0, "y": 0, "z": 0},
+                 "exit": {"x": 1280, "y": 1024, "z": 500}}
             ]
         }
     };
 
     var tracks = result.info.tracks;
     for (var i=0, len=tracks.length; i<len; ++i) {
-        var a = tracks[i].entry;
-        var b = tracks[i].exit;
+        var a = convert(tracks[i].entry);
+        var b = convert(tracks[i].exit);
         var geometry = new THREE.Geometry();
         geometry.vertices.push(new THREE.Vector3(a.x, a.y, a.z));
         geometry.vertices.push(new THREE.Vector3(b.x, b.y, b.z));
