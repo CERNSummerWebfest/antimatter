@@ -48,7 +48,7 @@ function generateGrid() {
 
 function fetch() {
     // TODO ajax request
-    var geometry = new THREE.Geometry();
+    var material = new THREE.LineBasicMaterial({color: color_lines, opacity: 1});
     var result = [];
 
     result.push(
@@ -61,13 +61,12 @@ function fetch() {
     for (var i=0, len=result.length; i<len; ++i) {
         var a = result[i][0];
         var b = result[i][1];
+        var geometry = new THREE.Geometry();
         geometry.vertices.push(new THREE.Vector3(a[0], a[1], a[2]));
         geometry.vertices.push(new THREE.Vector3(b[0], b[1], b[2]));
+        var line = new THREE.Line(geometry, material);
+        scene.add(line);
     }
-
-    var material = new THREE.LineBasicMaterial({color: color_lines, opacity: 1});
-    var line = new THREE.Line(geometry, material);
-    scene.add(line);
 }
 
 function animate() {
