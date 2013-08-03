@@ -38,10 +38,9 @@
     <div class="span6 "><!-- Start of Question and Submission DIV (column) -->
         <h1 id="question">Question</h1> <!-- The question will be loaded here -->
         <div id="controls" class="btn-group"> <!-- Start DIV for the control buttons -->
-            <button class="btn" value='play'><i class="icon-play"></i> Play</button>
-            <button class="btn" value='pause'><i class="icon-pause"></i> Pause</button>
-            <button class="btn" value='frame_bkw'><i class="icon-backward"></i> Previous Frame</button>
-            <button class="btn" value='frame_fwd'><i class="icon-forward"></i> Next Frame</button>
+            <button id="play-pause" class="btn btn-control" value='play-pause'><i class="icon-pause"></i> Pause</button>
+            <button class="btn btn-control" value='frame_bkw'><i class="icon-backward"></i> Previous Frame</button>
+            <button class="btn btn-control" value='frame_fwd'><i class="icon-forward"></i> Next Frame</button>
         </div> <!-- Start DIV for the control buttons -->
         <!-- Feedback items for the user -->
         <p>You are working now on task: <span id="task-id" class="label label-warning">#</span></p>
@@ -124,7 +123,7 @@ function getNewAnimation(task) {
             }
         }
         else {
-            anim.stop();
+            frameCounter = 0;
         }
         frameCounter++;
     }, task.layer);
@@ -184,12 +183,24 @@ pybossa.presentTask(function(task, deferred) {
         // add the layer to the stage
         task.stage.add(task.layer);
          
-        var currentAnimation = getNewAnimation(task);
-        currentAnimation.start();
+        task.currentAnimation = getNewAnimation(task);
+        task.currentAnimation.start();
 
+        $('.btn-control').off('click').on('click', function(evt) {
+            var action = $(evt.target).attr("value");
+            console.log(action);
+            if (action == 'play-pause') {
+                if (task.currentAnimation.isRunning()) {
+                    task.currentAnimation.stop();
+                    $("#play-pause").html('<i class="icon-play"></i> Play');
+                }
+                else {
+                    task.currentAnimation.start();
+                    $("#play-pause").html('<i class="icon-pause"></i> Pause');
+                }
+            }
+        });
 
-        //$('#photo-link').html('').append(task.info.image);
-        //$("#photo-link").attr("href", task.info.link);
         $("#question").html(task.info.question);
         $('#task-id').html(task.id);
         $('.btn-answer').off('click').on('click', function(evt) {
