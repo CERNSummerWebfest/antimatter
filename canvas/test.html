@@ -10,25 +10,42 @@
   <button id='goToFrameButton'>Go to frame</button>
     <script src="http://d3lp1msu2r81bx.cloudfront.net/kjs/js/lib/kinetic-v4.5.5.min.js"></script>
     <script defer="defer">
+      var height = 200;
+      var width = 578;
+    
       var stage = new Kinetic.Stage({
         container: 'container',
-        width: 578,
-        height: 200
+        width: width,
+        height: height
       });
       var layer = new Kinetic.Layer();
 
       var imageObj = new Image();
-      imageObj.onload = function() {
-        var image = new Kinetic.Image({
+      var image = new Kinetic.Image({
           x: 200,
           y: 50,
           image: imageObj,
           width: 106,
           height: 118
-        });
+      });
+      imageObj.onload = function() {
         layer.add(image);
         stage.add(layer);
       };
+      
+      image.on('mousedown', function () {
+        var mousePos = stage.getMousePosition();
+        var circle = new Kinetic.Circle({
+          x: mousePos.x,
+          y: mousePos.y,
+          radius: 5,
+          fill: 'red',
+          stroke: 'red',
+          strokeWidth: 4
+        });
+        layer.add(circle);
+        layer.draw();
+      });
       
       var period = 100;
       var maxPictures = 40;
