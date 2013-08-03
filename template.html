@@ -1,3 +1,4 @@
+<script src="http://d3lp1msu2r81bx.cloudfront.net/kjs/js/lib/kinetic-v4.5.5.min.js"></script>
 <div class="row">
     <!-- Success and Error Messages for the user --> 
     <div class="span6 offset2" style="height:50px">
@@ -33,9 +34,6 @@
     task.
 -->
 
-<div id="canvas" class="skeleton"> <!-- Start Skeleton Row-->
-</div> <!-- Start Skeleton Row-->
-
 <div class="row skeleton"> <!-- Start Skeleton Row-->
     <div class="span6 "><!-- Start of Question and Submission DIV (column) -->
         <h1 id="question">Question</h1> <!-- The question will be loaded here -->
@@ -70,9 +68,7 @@
         <div id="disqus_thread" style="margin-top:5px;display:none"></div>
     </div><!-- End of Question and Submission DIV (column) -->
     <div class="span6"><!-- Start of Photo DIV (column) -->
-        <a id="photo-link" href="#">
-            <img id="photo" src="http://i.imgur.com/GeHxzb7.png" style="max-width=100%">
-        </a>
+        <div id="canvas"></div>
     </div><!-- End of Photo DIV (columnt) -->
 </div><!-- End of Skeleton Row -->
 
@@ -119,6 +115,9 @@ pybossa.taskLoaded(function(task, deferred) {
         });
         img.attr('src', task.info.url + "00.jpg").css("width", "460");
         task.info.image = img;
+
+
+
     }
     else {
         deferred.resolve(task);
@@ -128,8 +127,38 @@ pybossa.taskLoaded(function(task, deferred) {
 pybossa.presentTask(function(task, deferred) {
     if ( !$.isEmptyObject(task) ) {
         loadUserProgress();
-        $('#photo-link').html('').append(task.info.image);
-        $("#photo-link").attr("href", task.info.link);
+        // KINECT
+        var width =  460;
+        var height = Math.floor(width / 1.21); 
+        task.stage = new Kinetic.Stage({
+          container: 'canvas',
+          width: width,
+          height: height 
+        });
+
+        task.layer = new Kinetic.Layer();
+
+        var imageObj = new Image();
+        imageObj.onload = function() {
+          var yoda = new Kinetic.Image({
+            x: 0,
+            y: 0,
+            image: imageObj,
+            width: width,
+            height: height
+          });
+
+          // add the shape to the layer
+          task.layer.add(yoda);
+
+          // add the layer to the stage
+          task.stage.add(task.layer);
+        };
+        imageObj.src = task.info.url + '00.jpg';
+
+
+        //$('#photo-link').html('').append(task.info.image);
+        //$("#photo-link").attr("href", task.info.link);
         $("#question").html(task.info.question);
         $('#task-id').html(task.id);
         $('.btn-answer').off('click').on('click', function(evt) {
