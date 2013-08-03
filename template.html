@@ -172,6 +172,19 @@ pybossa.presentTask(function(task, deferred) {
             width: width,
             height: height
         });
+        image.on('mousedown', function () {
+            var mousePos = task.stage.getMousePosition();
+            var circle = new Kinetic.Circle({
+                x: mousePos.x,
+                y: mousePos.y,
+                radius: 5,
+                fill: 'red',
+                stroke: 'red',
+                strokeWidth: 4
+            });
+            task.layer.add(circle);
+           task.layer.draw();
+        });
         imageObj.src = task.info.url + "00.jpg";
 
         // add the shape to the layer
