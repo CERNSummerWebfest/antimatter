@@ -32,6 +32,10 @@
     It uses the class="skeleton" to identify the elements that belong to the
     task.
 -->
+
+<div id="canvas" class="skeleton"> <!-- Start Skeleton Row-->
+</div> <!-- Start Skeleton Row-->
+
 <div class="row skeleton"> <!-- Start Skeleton Row-->
     <div class="span6 "><!-- Start of Question and Submission DIV (column) -->
         <h1 id="question">Question</h1> <!-- The question will be loaded here -->
@@ -113,8 +117,7 @@ pybossa.taskLoaded(function(task, deferred) {
             // continue as soon as the image is loaded
             deferred.resolve(task);
         });
-        img.attr('src', task.info.url + "00.jpg").css('height', 460);
-        img.addClass('img-polaroid');
+        img.attr('src', task.info.url + "00.jpg").css("width", "460");
         task.info.image = img;
     }
     else {
