@@ -131,6 +131,36 @@ pybossa.taskLoaded(function(task, deferred) {
 });
 
 pybossa.presentTask(function(task, deferred) {
+    var period = 100;
+    var maxPictures = 40;
+    var minPictures = 0;
+
+    function getNewAnimation() {
+        var frameCounter = 0;
+        var anim = new Kinetic.Animation(function(frameObj) {
+            if (frameCounter/period < maxPictures) {
+                if (frameCounter === 0 || frameCounter % period === 0) {
+                    var imageIndex = frameCounter === 0 ? 0 : frameCounter/period;
+                    var normalizedIndex = (imageIndex < 10) ? "0" + imageIndex : imageIndex;
+                    imageObj.src = task.info.url + normalizedIndex + '.jpg';
+                }
+            }
+            else {
+                anim.stop();
+            }
+            frameCounter++;
+        }, task.layer);
+        return anim;
+    }
+
+     function goToFrame(frameNumber) {
+         if (frameNumber > maxPictures || frameNumber < minPictures)
+             return;
+         var normalizedIndex = (frameNumber < 10) ? "0" + frameNumber : frameNumber;
+         imageObj.src = task.info.url + normalizedIndex + '.jpg';
+         task.layer.draw();
+    }
+
     if ( !$.isEmptyObject(task) ) {
         loadUserProgress();
         // KINECT
@@ -145,22 +175,23 @@ pybossa.presentTask(function(task, deferred) {
         task.layer = new Kinetic.Layer();
 
         var imageObj = new Image();
-        imageObj.onload = function() {
-          var yoda = new Kinetic.Image({
+        var image = new Kinetic.Image({
             x: 0,
             y: 0,
             image: imageObj,
             width: width,
             height: height
-          });
+        });
+        imageObj.src = task.info.url + "00.jpg";
 
-          // add the shape to the layer
-          task.layer.add(yoda);
+        // add the shape to the layer
+        task.layer.add(image);
 
-          // add the layer to the stage
-          task.stage.add(task.layer);
-        };
-        imageObj.src = task.info.url + '00.jpg';
+        // add the layer to the stage
+        task.stage.add(task.layer);
+         
+        var currentAnimation = getNewAnimation();
+        currentAnimation.start();
 
 
         //$('#photo-link').html('').append(task.info.image);
