@@ -32,5 +32,6 @@ def get_antimatter_pictures(folder, url):
                 _url = "%s/image_%s_ifr" % (url, viewid)
                 tasks[viewid] = _url
     for k in tasks.keys():
-        photos.append(tasks[k])
+        photo = dict(viewid=k, url=tasks[k])
+        photos.append(photo)
     return photos

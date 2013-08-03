@@ -158,7 +158,8 @@ def run(app_config, options):
     def create_photo_task(app, photo, question, priority=0):
         # Data for the tasks
         task_info = dict(question=question,
-                         url=photo)
+                         url=photo['url'],
+                         viewid=photo['viewid'])
         try:
             response = pbclient.create_task(app.id, task_info, priority_0=priority)
             check_api_error(response)
