@@ -28,22 +28,24 @@
         stage.add(layer);
       };
       
-      var period = 1000;
+      var period = 100;
       var images = ['http://mozorg.cdn.mozilla.net/media/img/home/firefox.png?2013-06', 'https://farm8.staticflickr.com/7308/9214420509_8f3ec28f58_q.jpg', 'https://farm4.staticflickr.com/3665/9214404361_a59e464685_q.jpg', 'https://farm3.staticflickr.com/2878/9214379403_29b7604c80_q.jpg', 'https://farm3.staticflickr.com/2833/9214353137_9914767213_q.jpg'];
       
       function getNewAnimation() {
+        var frameCounter = 0;
         var anim = new Kinetic.Animation(function(frameObj) {
-          var time = frameObj.time;
-          console.log(time);
-          if (time/period < images.length) {
-            if (time % period == 0) {
-              var imageIndex = time/period - 1;
+          console.log('frame: ' + frameCounter);
+          if (frameCounter/period < images.length) {
+            if (frameCounter === 0 || frameCounter % period === 0) {
+              var imageIndex = (frameCounter === 0 ? 0 : frameCounter/period);
+              console.log('image index: ' + imageIndex);
               imageObj.src = images[imageIndex];
             }
           }
           else {
             anim.stop();
           }
+          frameCounter++;
         }, layer);
         return anim;
       }
