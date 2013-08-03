@@ -1,0 +1,11 @@
+.DS_Store
+Desktop.ini
+*~
+*.swp
+*.tmp
+
+.project
+.settings
+target
+.idea
+node_modules
