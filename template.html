@@ -42,6 +42,8 @@
             <button class="btn btn-control" value='frame_bkw'><i class="icon-backward"></i> Previous Frame</button>
             <button class="btn btn-control" value='frame_fwd'><i class="icon-forward"></i> Next Frame</button>
         </div> <!-- Start DIV for the control buttons -->
+        <br/> 
+        <button class="btn btn-large btn-info btn-track-control" value='add'><i class="icon-plus"></i> Add a track</button>
         <!-- Feedback items for the user -->
         <p>You are working now on task: <span id="task-id" class="label label-warning">#</span></p>
         <p>You have completed: <span id="done" class="label label-info"></span> tasks from
@@ -105,6 +107,8 @@ pybossa.taskLoaded(function(task, deferred) {
         task.period = 5;
         task.maxPictures = 40;
         task.minPictures = 0;
+        task.currentTrack = {entry:{x:-1,y:-1,z:0}, exit:{x:-1,y:-1,z:40}};
+        task.tracks = [];
         deferred.resolve(task);
     }
     else {
@@ -139,6 +143,14 @@ function goToFrame(task, frameNumber) {
      task.layer.draw();
 }
 
+function unscale(track, width, height) {
+    track.entry.x = Math.floor((track.entry.x * 1240)/width);
+    track.entry.y = Math.floor((track.entry.y * 1024)/height);
+    track.exit.x = Math.floor((track.exit.x * 1240)/width);
+    track.exit.y = Math.floor((track.exit.y * 1024)/height);
+    return track;
+}
+
 
 pybossa.presentTask(function(task, deferred) {
     if ( !$.isEmptyObject(task) ) {
@@ -167,11 +179,32 @@ pybossa.presentTask(function(task, deferred) {
             var circle = new Kinetic.Circle({
                 x: mousePos.x,
                 y: mousePos.y,
-                radius: 1,
+                radius: 2,
                 fill: 'red',
                 stroke: 'red',
                 strokeWidth: 4
             });
+            if (task.currentTrack.entry.x == -1) {
+                task.currentTrack.entry.x = mousePos.x;
+                task.currentTrack.entry.y = mousePos.y;
+            }
+            else {
+                if (task.currentTrack.exit.x == -1) {
+                    task.currentTrack.exit.x = mousePos.x;
+                    task.currentTrack.exit.y = mousePos.y;
+                }
+            }
+            if ((task.currentTrack.entry.x != -1) && (task.currentTrack.exit.y != -1)){
+                var newTrack = $.extend(true, {}, task.currentTrack);
+                newTrack = unscale(newTrack, $("#canvas").width(),$("#canvas").height());
+                task.tracks.push(newTrack);
+                console.logs(task.tracks);
+                task.currentTrack.entry.x = -1;
+                task.currentTrack.entry.y = -1;
+                task.currentTrack.exit.x = -1;
+                task.currentTrack.exit.y = -1;
+            }
+
             task.layer.add(circle);
            task.layer.draw();
         });
@@ -188,7 +221,6 @@ pybossa.presentTask(function(task, deferred) {
 
         $('.btn-control').off('click').on('click', function(evt) {
             var action = $(evt.target).attr("value");
-            console.log(action);
             if (action == 'play-pause') {
                 if (task.currentAnimation.isRunning()) {
                     task.currentAnimation.stop();
@@ -198,6 +230,14 @@ pybossa.presentTask(function(task, deferred) {
                     task.currentAnimation.start();
                     $("#play-pause").html('<i class="icon-pause"></i> Pause');
                 }
+            }
+        });
+
+
+        $('.btn-track-control').off('click').on('click', function(evt) {
+            var action = $(evt.target).attr("value");
+            if (action == 'add') {
+                console.log(action);
             }
         });
 
