@@ -31,7 +31,7 @@ function init() {
     renderer.setClearColor(color_background, 1);
     width = $("#antimatter-visualization").width();
     height = $("#antimatter-visualization").height();
-    renderer.setSize(width, width);
+    renderer.setSize(width, width/1.21);
     $("#antimatter-visualization").append(renderer.domElement);
 
     generateGrid();
