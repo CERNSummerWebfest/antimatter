@@ -6,6 +6,8 @@
   <button id="startbutton">Start</button>
   <button id="stopbutton">Stop</button>
   <button id="restartbutton">Restart</button>
+  <input type="text" id="frameInput" />
+  <button id='goToFrameButton'>Go to frame</button>
     <script src="http://d3lp1msu2r81bx.cloudfront.net/kjs/js/lib/kinetic-v4.5.5.min.js"></script>
     <script defer="defer">
       var stage = new Kinetic.Stage({
@@ -29,6 +31,8 @@
       };
       
       var period = 100;
+      var maxPictures = 40;
+      var minPictures = 0;
       var images = ['http://mozorg.cdn.mozilla.net/media/img/home/firefox.png?2013-06', 'https://farm8.staticflickr.com/7308/9214420509_8f3ec28f58_q.jpg', 'https://farm4.staticflickr.com/3665/9214404361_a59e464685_q.jpg', 'https://farm3.staticflickr.com/2878/9214379403_29b7604c80_q.jpg', 'https://farm3.staticflickr.com/2833/9214353137_9914767213_q.jpg'];
       
       function getNewAnimation() {
@@ -52,6 +56,13 @@
       var currentAnimation = getNewAnimation();
       currentAnimation.start();
       
+      function goToFrame(frameNumber) {
+        if (frameNumber > maxPictures || frameNumber < minPictures)
+          return;
+        imageObj.src = this.images[frameNumber - 1];
+        layer.add(imageObj);
+      }
+      
       document.querySelector('#startbutton').addEventListener('click', function () {
         currentAnimation.start();
       }, false);
@@ -63,6 +74,11 @@
       document.querySelector('#restartbutton').addEventListener('click', function () {
         currentAnimation = getNewAnimation();
         currentAnimation.start();
+      }, false);
+      
+      document.querySelector('#goToFrameButton').addEventListener('click', function() {
+        currentAnimation = goToFrame(document.querySelector('#frameInput'));
+        document.querySelector('#startbutton').enabled = false;
       }, false);
 
     </script>
