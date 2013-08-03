@@ -1,0 +1,68 @@
+<html>
+<head>
+</head>
+<body>
+  <div id="container"></div>
+  <button id="startbutton">Start</button>
+  <button id="stopbutton">Stop</button>
+  <button id="restartbutton">Restart</button>
+    <script src="http://d3lp1msu2r81bx.cloudfront.net/kjs/js/lib/kinetic-v4.5.5.min.js"></script>
+    <script defer="defer">
+      var stage = new Kinetic.Stage({
+        container: 'container',
+        width: 578,
+        height: 200
+      });
+      var layer = new Kinetic.Layer();
+
+      var imageObj = new Image();
+      imageObj.onload = function() {
+        var image = new Kinetic.Image({
+          x: 200,
+          y: 50,
+          image: imageObj,
+          width: 106,
+          height: 118
+        });
+        layer.add(image);
+        stage.add(layer);
+      };
+      
+      var period = 1000;
+      var images = ['http://mozorg.cdn.mozilla.net/media/img/home/firefox.png?2013-06', 'https://farm8.staticflickr.com/7308/9214420509_8f3ec28f58_q.jpg', 'https://farm4.staticflickr.com/3665/9214404361_a59e464685_q.jpg', 'https://farm3.staticflickr.com/2878/9214379403_29b7604c80_q.jpg', 'https://farm3.staticflickr.com/2833/9214353137_9914767213_q.jpg'];
+      
+      function getNewAnimation() {
+        var anim = new Kinetic.Animation(function(frameObj) {
+          var time = frameObj.time;
+          console.log(time);
+          if (time/period < images.length) {
+            if (time % period == 0) {
+              var imageIndex = time/period - 1;
+              imageObj.src = images[imageIndex];
+            }
+          }
+          else {
+            anim.stop();
+          }
+        }, layer);
+        return anim;
+      }
+      var currentAnimation = getNewAnimation();
+      currentAnimation.start();
+      
+      document.querySelector('#startbutton').addEventListener('click', function () {
+        currentAnimation.start();
+      }, false);
+      
+      document.querySelector('#stopbutton').addEventListener('click', function () {
+        currentAnimation.stop();
+      }, false);
+      
+      document.querySelector('#restartbutton').addEventListener('click', function () {
+        currentAnimation = getNewAnimation();
+        currentAnimation.start();
+      }, false);
+
+    </script>
+</body>
+</html>
