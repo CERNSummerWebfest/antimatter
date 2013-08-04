@@ -71,7 +71,7 @@ function generateCounter() {
     counter.css("left", "20px");
     counter.css("text-shadow", "2px 2px 2px #DF740C");
     counter.css("font-size", "30");
-    counter.css("font-family", "'Oxygen', sans-serif");
+    counter.css("font-family", "'Museo Slab', sans-serif");
     counter.css("color", "#E6FFFF");
     counter.css("-webkit-touch-callout", "none");
     counter.css("-webkit-user-select", "none");
