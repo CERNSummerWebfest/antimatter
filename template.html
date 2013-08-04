@@ -42,10 +42,15 @@
 <div class="row skeleton"> <!-- Start Skeleton Row-->
     <div class="span6 "><!-- Start of Question and Submission DIV (column) -->
         <h1 id="question">Question</h1> <!-- The question will be loaded here -->
-        <div id="controls" class="btn-group"> <!-- Start DIV for the control buttons -->
-            <button id="play-pause" class="btn btn-control" value='play-pause'><i class="icon-pause"></i> Pause</button>
-            <button class="btn btn-control" value='frame_bkw'><i class="icon-backward"></i> Previous Frame</button>
-            <button class="btn btn-control" value='frame_fwd'><i class="icon-forward"></i> Next Frame</button>
+
+
+        <div > <!-- Start DIV for the control buttons -->
+        <button id="play-pause" class="btn btn-large btn-success btn-control" value='play-pause'><i class="icon-pause"></i> Pause</button>
+        </div> <!-- Start DIV for the control buttons -->
+        <div id="controls" class="btn-group" style="margin-top:5px;"> <!-- Start DIV for the control buttons -->
+            <button class="btn btn-control" value='frame_bkw'><i class="icon-minus"></i> Decrease speed</button>
+            <button class="btn btn-control" value='frame_fwd'><i class="icon-plus"></i> Increase speed</button>
+            <button class="btn btn-control" value='frame_reset'><i class="icon-plus"></i> Reset speed</button>
         </div> <!-- Start DIV for the control buttons -->
         <br/> 
         <p class="lead"> You have found  <span id="number-of-tracks" class="badge badge-info">0</span> tracks
@@ -119,7 +124,7 @@ function loadUserProgress() {
 
 pybossa.taskLoaded(function(task, deferred) {
     if ( !$.isEmptyObject(task) ) {
-        task.period = 5;
+        task.period = 20;
         task.maxPictures = 40;
         task.minPictures = 0;
         task.currentTrack = {entry:{x:-1,y:-1,z:0}, exit:{x:-1,y:-1,z:40}};
@@ -251,6 +256,23 @@ pybossa.presentTask(function(task, deferred) {
 
         $('.btn-control').off('click').on('click', function(evt) {
             var action = $(evt.target).attr("value");
+            if (action == 'frame_fwd') {
+                if (task.period > 0 ){
+                task.period -= 1;
+                }
+            }
+
+            if (action == 'frame_bkw') {
+                if (task.period < 60 ){
+                task.period += 1;
+                }
+            }
+
+            if (action == 'frame_reset') {
+                task.period += 20;
+            }
+
+
             if (action == 'play-pause') {
                 if (task.currentAnimation.isRunning()) {
                     task.currentAnimation.stop();
