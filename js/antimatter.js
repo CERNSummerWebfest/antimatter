@@ -36,6 +36,7 @@ function init() {
     renderer.setClearColor(color_background, 1);
     renderer.setSize(width, height);
     $("#antimatter-visualization").append(renderer.domElement);
+    $("#antimatter-visualization").css("position", "relative");
 
     generateGrid();
     generateCounter();
