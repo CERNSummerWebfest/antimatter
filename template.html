@@ -48,9 +48,9 @@
             <button class="btn btn-control" value='frame_fwd'><i class="icon-forward"></i> Next Frame</button>
         </div> <!-- Start DIV for the control buttons -->
         <br/> 
-        <button class="btn btn-large btn-info btn-track-control" value='add'><i class="icon-plus"></i> Add a track</button>
-        <br/> 
-        <button class="btn btn-answer" value='save'><i class="icon-thmumb-up"></i> Save tracks (you will not break anything, and we'll delete everything tomorrow!!!)</button>
+        <p> You have found  <span id="number-of-tracks" class="badge badge-info">0</span>
+        </p> 
+        <button class="btn btn-answer" value='save'><i class="icon-save"></i> Save drawn tracks</button>
         <!-- Feedback items for the user -->
         <p>You are working now on task: <span id="task-id" class="label label-warning">#</span></p>
         <p>You have completed: <span id="done" class="label label-info"></span> tasks from
@@ -222,6 +222,7 @@ pybossa.presentTask(function(task, deferred) {
                 // Unscale the points to save them with the real picture size
                 newTrack = unscale(newTrack, $("#canvas").width(),$("#canvas").height());
                 task.tracks.push(newTrack);
+                $("#number-of-tracks").text(task.tracks.length);
                 task.currentTrack.entry.x = -1;
                 task.currentTrack.entry.y = -1;
                 task.currentTrack.exit.x = -1;
