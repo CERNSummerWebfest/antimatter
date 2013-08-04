@@ -1,4 +1,9 @@
 <script src="http://d3lp1msu2r81bx.cloudfront.net/kjs/js/lib/kinetic-v4.5.5.min.js"></script>
+<style>
+    #canvas {
+        cursor: crosshair;
+    }
+</style>
 <div class="row">
     <!-- Success and Error Messages for the user --> 
     <div class="span6 offset2" style="height:50px">
@@ -44,6 +49,8 @@
         </div> <!-- Start DIV for the control buttons -->
         <br/> 
         <button class="btn btn-large btn-info btn-track-control" value='add'><i class="icon-plus"></i> Add a track</button>
+        <br/> 
+        <button class="btn btn-answer" value='save'><i class="icon-thmumb-up"></i> Save tracks (you will not break anything, and we'll delete everything tomorrow!!!)</button>
         <!-- Feedback items for the user -->
         <p>You are working now on task: <span id="task-id" class="label label-warning">#</span></p>
         <p>You have completed: <span id="done" class="label label-info"></span> tasks from
@@ -91,6 +98,14 @@
 <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
 
 <script>
+
+var colors = ['rgb(31,119,180)', 'rgb(255,127,14)', 'rgb(44,160,44)', 'rgb(214,39,40)',
+              'rgb(148,103,189)', 'rgb(227,119,194)', 'rgb(188,189,34)', 'rgb(23,190, 207)',
+              'rgb(199,233,192)'
+             ];
+
+var colorIndex = 0;
+
 function loadUserProgress() {
     pybossa.userProgress('antimatter').done(function(data){
         var pct = Math.round((data.done*100)/data.total);
@@ -174,14 +189,15 @@ pybossa.presentTask(function(task, deferred) {
             width: width,
             height: height
         });
+
         image.on('mousedown', function () {
             var mousePos = task.stage.getMousePosition();
             var circle = new Kinetic.Circle({
                 x: mousePos.x,
                 y: mousePos.y,
                 radius: 2,
-                fill: 'red',
-                stroke: 'red',
+                fill: colors[colorIndex],
+                stroke: colors[colorIndex],
                 strokeWidth: 4
             });
             if (task.currentTrack.entry.x == -1) {
@@ -196,13 +212,26 @@ pybossa.presentTask(function(task, deferred) {
             }
             if ((task.currentTrack.entry.x != -1) && (task.currentTrack.exit.y != -1)){
                 var newTrack = $.extend(true, {}, task.currentTrack);
+
+                // Draw a line showing the track with the same color
+                var line = new Kinetic.Line({
+                    points: [[newTrack.entry.x, newTrack.entry.y],[newTrack.exit.x, newTrack.exit.y]],
+                    stroke: colors[colorIndex],
+                    });
+                task.layer.add(line);
+                // Unscale the points to save them with the real picture size
                 newTrack = unscale(newTrack, $("#canvas").width(),$("#canvas").height());
                 task.tracks.push(newTrack);
-                console.logs(task.tracks);
                 task.currentTrack.entry.x = -1;
                 task.currentTrack.entry.y = -1;
                 task.currentTrack.exit.x = -1;
                 task.currentTrack.exit.y = -1;
+                if (colorIndex < colors.length) {
+                    colorIndex += 1;
+                }
+                else {
+                    colorIndex = 0;
+                }
             }
 
             task.layer.add(circle);
@@ -245,9 +274,9 @@ pybossa.presentTask(function(task, deferred) {
         $('#task-id').html(task.id);
         $('.btn-answer').off('click').on('click', function(evt) {
             var answer = $(evt.target).attr("value");
-            if (typeof answer != 'undefined') {
-                //console.log(answer);
-                pybossa.saveTask(task.id, answer).done(function() {
+            if (answer == 'save') {
+                console.log(task.tracks);
+                pybossa.saveTask(task.id, task.tracks).done(function() {
                     deferred.resolve();
                 });
                 $("#loading").fadeIn(500);
