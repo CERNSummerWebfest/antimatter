@@ -1,0 +1,32 @@
+ntroduction
+Webfest - Draft 1
+CERN Antimatter Annihilation Experiment
+Welcome to the CERN Antimatter Annihilation Experiment.
+We need your help to figure out how antimatter is affected by gravity. This has never been tested before and if antimatter behaves differently from matter then we prove Einstein wrong as E = mc2 is equally applicable to both matter and antimatter.
+What is antimatter?
+Antimatter is material composed of antiparticles. For example, a positron (the antiparticle of an electron) combines with an antiproton to form antihydrogen.
+Antiparticles have the same mass as normal matter particles but the opposite charge.
+When an antiparticle collides with a particle they both obliterate to emit radiation and some other particles - this is called annihilation.
+The observable universe is composed almost entirely of matter - so antimatter has to be produced in the lab to be studied.
+What’s this all about?
+The AEGiS experiment at CERN is colliding hydrogen atoms with antihydrogen atoms. On collision the hydrogen and antihydrogen annihilate to produce mostly pions and some other particles - which we’ll call shrapnel.
+The shrapnel travel through a special gel called an emulsion and we can see its tracks.
+We need your help to map the path that the shrapnel takes. This will enable us to trace back to the point of annihilation.
+Then, as we know the starting position of the antiparticles and the distance travelled to the point of annihilation, we can work out how far the antiparticle fell during its journey. Then we can observe the effect of gravity on the antiparticles
+This data has been uploaded directly from CERN. It’s never been analysed before. So you can make a genuine contribution to CERN’s research and our understanding of the universe.
+Why me?
+Humans are way better at interpreting the particle tracks than machines so we need your big brains.
+￼What do I have to do?
+All you have is join the dots!
+We provide you with a short film of the particles traveling through the emulsion made up of 40 still pictures taken over a microsecond.
+Just draw the path which the particles follow!
+The science
+Since Galileo dropped his balls from the Leaning Tower of Pisa humans have been fascinated by gravity.
+The principle of universality of free fall, or weak equivalence principle (WEP), says that all bodies fall with the same acceleration independent of mass and composition.
+So when Galileo dropped balls of the same size but a different mass they hit the ground at the same time.
+WEP has been tested with very high precision for matter but never for antimatter - so this is brand new physics.
+How does this experiment work?
+We make some antihydrogen and fire it at a foil which has the emulsion behind it.
+The positron and antiproton in the antihydrogen atom collide with an electron and proton respectively in the foil or in the emulsion and annihilate.
+This produces some particles, mostly pions, which travel through the emulsion. The pions produce fat tracks in the emulsion while others particles, such as protons, produce thin tracks. Can you map their tracks?
+We don’t want the antimatter colliding with other particles before it reaches the foil therefore we have to create a vacuum for the experiment. This means the experiment has to be conducted at 3K i.e. almost at absolute zero temperature.
