@@ -14,6 +14,8 @@ var grid_x = 1280;
 var grid_z = 1024;
 var grid_step = 64;
 
+ratio = 12.82051282;
+
 var camera_pos = {
     "x": 700,
     "y": 250,
@@ -56,7 +58,7 @@ function generateGrid() {
     }
 
     var material = new THREE.LineBasicMaterial({color: color_mesh, opacity: 1});
-    var line = new THREE.Line( geometry, material );
+    var line = new THREE.Line(geometry, material);
     line.type = THREE.LinePieces;
     scene.add(line);
 }
@@ -65,35 +67,28 @@ function convert(pos) {
     var positions = {};
 
     positions["x"] = pos.x - grid_x/2;
-    positions["y"] = pos.z;
+    positions["y"] = pos.z * ratio;
     positions["z"] = pos.y - grid_z/2;
 
     return positions;
 }
 
 function fetch() {
-    // TODO ajax request
-    var material = new THREE.LineBasicMaterial({color: color_lines, opacity: 1});
-
-    var result = {
-        "info": {
-            "tracks": [
-                {"entry": {"x": 0, "y": 0, "z": 0},
-                 "exit": {"x": 1280, "y": 1024, "z": 500}}
-            ]
+    $.get("http://crowdcrafting.org/api/taskrun?app_id=794", function(data) {
+        var material = new THREE.LineBasicMaterial({color: color_lines, opacity: 1});
+        for (var i=0; i<data.length; ++i) {
+            var track = data[i].info;
+            for (var j=0; j<track.length; ++j) {
+                var a = convert(track[j].entry);
+                var b = convert(track[j].exit);
+                var geometry = new THREE.Geometry();
+                geometry.vertices.push(new THREE.Vector3(a.x, a.y, a.z));
+                geometry.vertices.push(new THREE.Vector3(b.x, b.y, b.z));
+                var line = new THREE.Line(geometry, material);
+                scene.add(line);
+            }
         }
-    };
-
-    var tracks = result.info.tracks;
-    for (var i=0, len=tracks.length; i<len; ++i) {
-        var a = convert(tracks[i].entry);
-        var b = convert(tracks[i].exit);
-        var geometry = new THREE.Geometry();
-        geometry.vertices.push(new THREE.Vector3(a.x, a.y, a.z));
-        geometry.vertices.push(new THREE.Vector3(b.x, b.y, b.z));
-        var line = new THREE.Line(geometry, material);
-        scene.add(line);
-    }
+    });
 }
 
 function animate() {
