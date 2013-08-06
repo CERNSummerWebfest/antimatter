@@ -1,26 +1,32 @@
+// Three.js global variables
 var scene;
 var camera;
 var renderer;
 
-var color_background = 0x0C141F;
-var color_mesh = 0x6FC3DF;
-var color_lines = 0xFFE64D;
-
-var max_height = 500;
-var min_height = 0;
-var grid_size = 5000;
-
-var grid_x = 1280;
-var grid_z = 1024;
-var grid_step = 64;
-
-var ratio = 12.82051282;
-
+// Camera defaults
 var camera_pos = {
     "x": 700,
     "y": 250,
     "z": 700
 };
+
+// Color palette (based on Tron: http://www.colourlovers.com/palette/1406402/Tron_Legacy_2)
+var color_background = 0x0C141F;
+var color_mesh = 0x6FC3DF;
+// var color_lines = 0xDF740C; // orange
+var color_lines = 0xFFE64D; // yellow
+var color_textshadow = "#0C141F";
+
+// Representation size
+var max_height = 500;
+var min_height = 0;
+var grid_size = 5000;
+var grid_x = 1280;
+var grid_z = 1024;
+var grid_step = 64;
+var ratio_z = 12.82051282;
+
+// AJAX cache
 
 function init() {
     width = $("#antimatter-visualization").width();
@@ -70,7 +76,7 @@ function generateCounter() {
     counter.css("position", "absolute");
     counter.css("top", "15px");
     counter.css("left", "20px");
-    counter.css("text-shadow", "2px 2px 2px #DF740C");
+    counter.css("text-shadow", "2px 2px 2px " + color_textshadow);
     counter.css("font-size", "30");
     counter.css("font-family", "'Museo Slab', sans-serif");
     counter.css("color", "#E6FFFF");
@@ -88,15 +94,20 @@ function convert(pos) {
     var positions = {};
 
     positions["x"] = pos.x - grid_x/2;
-    positions["y"] = pos.z * ratio;
+    positions["y"] = pos.z * ratio_z;
     positions["z"] = pos.y - grid_z/2;
 
     return positions;
 }
 
 function fetch() {
-    $.get("http://crowdcrafting.org/api/taskrun?app_id=794", function(data) {
-        var material = new THREE.LineBasicMaterial({color: color_lines, opacity: 1});
+    var xhr = $.ajax({
+        url: "http://crowdcrafting.org/api/taskrun?app_id=794",
+        dataType: "json",
+    });
+
+    xhr.done(function(data) {
+        var material = new THREE.LineBasicMaterial({color: color_lines, opacity: 1, linewidth: 2});
         for (var i=0; i<data.length; ++i) {
             var track = data[i].info;
             for (var j=0; j<track.length; ++j) {
