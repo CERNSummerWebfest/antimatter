@@ -3,32 +3,25 @@ CERN Antimatter project for CrowdCrafting.org
 
 ![screenshot](http://i.imgur.com/qk290g5.png)
 
-Ever wondered what happens when you drop antimatter?
-----------------------------------------------------
+Does antimatter fall down or up?
+--------------------------------
+Help the [AEgIS experiment at CERN](http://aegis.web.cern.ch/) to work out how antimatter is affected by gravity. Just join the dots!
 
-CERN needs your help to analyse experimental results to figure out how antimatter is affected by gravity. You can help us better understand the Universe and, just maybe, prove Einstein wrong...
+Antimatter
+----------
+The observable universe is composed almost entirely of matter but we can produce stuff called antimatter in the lab. Antimatter is material composed of antiparticles.
 
-What is antimatter?
--------------------
+Antiparticles have the same mass as normal matter particles but the opposite charge. When an antiparticle collides with an ordinary matter particle they both annihilate - producing a burst of other particles and radiation.
 
-The observable Universe is composed almost entirely of matter but we can produce stuff called antimatter in the lab. Antimatter is material composed of antiparticles. So for example, a positron (the antiparticle of an electron) combines with an antiproton to form an antihydrogen atom.
+Antiparticles should interact gravitationally just like particles of ordinary matter because Einstein's weak equivalence principle states that gravity doesn't depend on composition. But if they don't then gravity is much more complicated than our current understanding indicates.
 
-Antiparticles have the same mass as normal matter particles but the opposite charge. When an antiparticle collides with an ordinary matter particle they both obliterate to emit radiation and some other particles - this is called annihilation.
+The experiment
+--------------
+The AEgIS experiment at CERN shoots antihydrogen atoms horizontally - whereupon they fly and fall - at a wall made of matter. On hitting the wall the antihydrogen annihilates with a matter nucleus in the wall to produce a burst of mostly pions and some heavier particles. These particles travel through a special gel called an emulsion which makes their tracks visible. Pions leave thin tracks while heavier particles leave much fatter tracks.
 
-Because of Einstein's principle of energy-matter equivalence (E = mc2) antiparticles should interact gravitationally just like particles of ordinary matter - and that's what scientist's expect to observe - but if they don't then Einstein was wrong...
+Tracing these tracks to their point of origin tells the AEgIS team exactly where the annihilation occurred, which in turn allows them to calculate how far each particle travels. They can then work out - from the distance each particle flew and fell - how antimatter interacts with gravity.
 
-What's the experiment?
-----------------------
-
-The Antihydrogen Experiment: Gravity, Interferometry, Spectroscopy (AEGiS) experiment at CERN collides hydrogen atoms with antihydrogen atoms.
-
-On collision the hydrogen and antihydrogen annihilate to produce mostly pions and some other particles - which we'll call starburst.
-
-The starburst travel through a special gel called an emulsion and we can see its tracks. If we trace these tracks to their point of origin then we know exactly where annihilation occurred.
-
-Then as we know the starting position of the antiparticles, the distance they travelled to the point of annihilation and how much they dropped - we can work out how far the antiparticle fell during its journey.
-
-Then we can figure out how antimatter interacts gravitationally.
+AEgIS will start annihilating antihydrogen atoms in 2015. In the meantime the team needs to better understand the process of annihilation by shooting antiprotons at different target materials which will result in different kinds of particle bursts. AEgIS scientists need to fine-tune their understanding of annihilation by mapping the particle tracks and counting the number of thin and fat tracks for many particle bursts.
 
 Check out the first prototype
 =============================
